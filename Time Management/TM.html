@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Weekly Schedule · Time Manager</title>
+    <!-- Bootstrap 5.3 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * {
+            transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.15s ease;
+        }
+
+        body {
+            background: #0B0C10;
+            background-image: radial-gradient(circle at 10% 20%, rgba(88, 28, 135, 0.08) 0%, rgba(0, 0, 0, 0) 80%);
+            font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            color: #EFF3FA;
+        }
+
+        .navbar {
+            background: #0B0E17 !important;
+            border-bottom: 2px solid #4c3b9b !important;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .navbar-brand {
+            background: linear-gradient(135deg, #3b0ccb, #5B6CFF);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent !important;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            cursor: pointer;
+        }
+
+        .dropdown-menu {
+            background-color: #1e1f2e !important;
+            border: 1px solid #4c3b9b !important;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        .dropdown-item {
+            color: #f0f3ff !important;
+            background-color: transparent !important;
+        }
+        .dropdown-item:hover {
+            background-color: #2a2a4a !important;
+            color: #ffffff !important;
+        }
+        .dropdown-item.text-danger {
+            color: #ff9eb5 !important;
+        }
+        .dropdown-item.text-danger:hover {
+            background-color: #4a1e3a !important;
+            color: #ffc0d0 !important;
+        }
+
+        .btn-primary {
+            background: linear-gradient(95deg, #7C5CBF, #5B4B9F);
+            border: none;
+            box-shadow: 0 4px 12px rgba(91, 75, 159, 0.4);
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            background: linear-gradient(95deg, #8e6ed6, #6d5bbf);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 14px rgba(110, 80, 200, 0.5);
+        }
+
+        .btn-outline-primary {
+            border: 1px solid #6A5ACD;
+            color: #C2C9FF;
+        }
+        .btn-outline-primary:hover {
+            background: #5B4B9F;
+            border-color: #8A70E0;
+            color: white;
+        }
+
+        .btn-success {
+            background: #6A4C9C;
+            border: none;
+            font-weight: 600;
+        }
+        .btn-success:hover {
+            background: #7F5CB5;
+        }
+
+        .btn-outline-danger {
+            color: #f8a5c2;
+            border-color: #a1587e;
+        }
+        .btn-outline-danger:hover {
+            background: #862e5c;
+            color: white;
+        }
+
+        .card {
+            border-radius: 1.5rem !important;
+            box-shadow: 0 25px 40px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(98, 70, 234, 0.15);
+            background: #10121fcc;
+            backdrop-filter: blur(2px);
+        }
+
+        .schedule-day-card {
+            background: #0f1120dd !important;
+            border-radius: 1.4rem !important;
+            backdrop-filter: blur(3px);
+            transition: transform 0.1s ease;
+            height: 100%;
+            border: 1px solid rgba(100, 80, 200, 0.3);
+        }
+        .schedule-day-card:hover {
+            transform: translateY(-3px);
+            border-color: #7a64e0 !important;
+        }
+
+        .schedule-item {
+            background: #191b2d;
+            border-radius: 1rem;
+            padding: 0.5rem 0.7rem;
+            margin-bottom: 0.6rem;
+            border-left: 3px solid #7c5cbf;
+            transition: 0.1s;
+        }
+        .schedule-item .item-title {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #ececff;
+        }
+        .schedule-item .item-time {
+            font-size: 0.7rem;
+            color: #b8aeff;
+        }
+        .schedule-actions .btn-sm {
+            padding: 0.15rem 0.45rem;
+            font-size: 0.7rem;
+            border-radius: 30px;
+        }
+
+        .badge-schedule-count {
+            background: #5B4B9F;
+            color: white;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.75rem;
+            padding: 0.25rem 0.7rem;
+        }
+
+        .form-control, .form-select {
+            background-color: #0E1022 !important;
+            border: 1.5px solid #312b5e !important;
+            color: #F0F3FF !important;
+            border-radius: 1rem;
+            padding: 0.7rem 1rem;
+        }
+        .form-control:focus, .form-select:focus {
+            border-color: #957AFF !important;
+            box-shadow: 0 0 0 3px rgba(107, 70, 220, 0.4) !important;
+            background-color: #13162B !important;
+        }
+        .form-label {
+            font-weight: 600;
+            color: #C2C9FF;
+            margin-bottom: 0.5rem;
+        }
+
+        footer {
+            background: transparent;
+            border-top: 1px solid #2D295A;
+            color: #9198C0;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1A1C28;
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #5F51B5;
+            border-radius: 10px;
+        }
+
+        .week-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+        }
+        .day-col {
+            flex: 1 1 220px;
+        }
+
+        .floating-toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 9999;
+            background: #4C3790;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 2rem;
+            font-weight: 500;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+            backdrop-filter: blur(4px);
+            animation: fadeSlide 0.2s ease;
+        }
+        @keyframes fadeSlide {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container-fluid container">
+        <a class="navbar-brand fw-bold fs-4" id="refreshBrand" href="#" style="cursor: pointer;">
+            <i class="fas fa-calendar-week me-2" style="color:#9b87f5;"></i> Time<span style="color:#7C6ADE;">Manager</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon" style="filter: invert(0.7);"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarMain">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <button class="btn btn-outline-danger btn-sm" id="clearAllScheduleNavBtn" style="border-radius: 40px;">
+                        <i class="fas fa-trash-alt me-1"></i> Clear schedule
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<div class="container my-4">
+    <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+        <div>
+            <i class="fas fa-clock fs-2 me-2" style="color:#B287FF;"></i>
+            <h1 class="d-inline-block fw-bold display-6" style="background: linear-gradient(135deg,#cbb6ff, #9a77ff); -webkit-background-clip:text; background-clip:text; color:transparent;">Weekly Schedule - Time Management</h1>
+        </div>
+    </div>
+
+    <!-- Weekly schedule grid -->
+    <div class="week-grid" id="weeklyScheduleContainer">
+        <!-- dynamic days injected here -->
+    </div>
+    <!-- No extra instructional text, just minimal -->
+</div>
+
+<!-- MODAL: Add / Edit Schedule Item -->
+<div class="modal fade" id="scheduleItemModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background:#14172b !important; border:1px solid #6f5dc2;">
+            <div class="modal-header border-bottom border-secondary">
+                <h5 class="modal-title" id="scheduleModalTitle"><i class="fas fa-plus-circle me-2"></i>Schedule item</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="scheduleFormModal">
+                    <input type="hidden" id="editScheduleId" value="">
+                    <div class="mb-3">
+                        <label class="form-label">Day <span class="text-danger">*</span></label>
+                        <select id="scheduleDaySelect" class="form-select" required>
+                            <option value="0">Monday</option>
+                            <option value="1">Tuesday</option>
+                            <option value="2">Wednesday</option>
+                            <option value="3">Thursday</option>
+                            <option value="4">Friday</option>
+                            <option value="5">Saturday</option>
+                            <option value="6">Sunday</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Task / Event title <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="scheduleTitle" placeholder="e.g., Team meeting, Gym, Study block" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Time (optional)</label>
+                        <input type="text" class="form-control" id="scheduleTime" placeholder="09:30 AM, 14:00, Evening">
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="saveScheduleBtn"><i class="fas fa-check"></i> Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="container text-center py-4 mt-4">
+    <p class="mb-0">📅 Plan your week and stay productive</p>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // ========================
+    // WEEKLY SCHEDULE MANAGER (standalone) 
+    // no refresh button, no instructional footer, brand click reloads page
+    // ========================
+    const SCHEDULE_STORAGE = 'weekly_schedule_manager_app';
+    const daysOfWeek = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+    let scheduleItems = [];
+
+    function showNotice(msg, bgColor = "#6a4c9c") {
+        const toast = document.createElement('div');
+        toast.className = 'floating-toast';
+        toast.style.background = bgColor;
+        toast.innerHTML = `<i class="fas fa-info-circle me-2"></i>${msg}`;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 1800);
+    }
+
+    function loadSchedule() {
+        const stored = localStorage.getItem(SCHEDULE_STORAGE);
+        if (stored) {
+            scheduleItems = JSON.parse(stored);
+        } else {
+            scheduleItems = [];
+            localStorage.setItem(SCHEDULE_STORAGE, JSON.stringify([]));
+        }
+    }
+
+    function saveSchedule() {
+        localStorage.setItem(SCHEDULE_STORAGE, JSON.stringify(scheduleItems));
+    }
+
+    function getNextId() {
+        return scheduleItems.length ? Math.max(...scheduleItems.map(i => i.id)) + 1 : 1;
+    }
+
+    function addScheduleItem(dayIndex, title, time) {
+        if (!title.trim()) return false;
+        scheduleItems.push({
+            id: getNextId(),
+            dayIndex: parseInt(dayIndex),
+            title: title.trim(),
+            time: time ? time.trim() : "",
+            createdAt: Date.now()
+        });
+        saveSchedule();
+        return true;
+    }
+
+    function updateScheduleItem(id, dayIndex, title, time) {
+        const idx = scheduleItems.findIndex(i => i.id === id);
+        if (idx === -1) return false;
+        scheduleItems[idx] = {
+            ...scheduleItems[idx],
+            dayIndex: parseInt(dayIndex),
+            title: title.trim(),
+            time: time ? time.trim() : ""
+        };
+        saveSchedule();
+        return true;
+    }
+
+    function deleteScheduleItem(id) {
+        const beforeCount = scheduleItems.length;
+        scheduleItems = scheduleItems.filter(i => i.id !== id);
+        if (scheduleItems.length !== beforeCount) {
+            saveSchedule();
+            return true;
+        }
+        return false;
+    }
+
+    function clearAllSchedule() {
+        if (confirm("⚠️ DELETE ALL WEEKLY SCHEDULE ITEMS? This action cannot be undone.")) {
+            scheduleItems = [];
+            saveSchedule();
+            renderWeeklySchedule();
+            showNotice("🗑️ All schedule entries cleared", "#b3476e");
+        }
+    }
+
+    function getItemsForDay(dayIndex) {
+        return scheduleItems.filter(item => item.dayIndex === dayIndex).sort((a,b) => a.createdAt - b.createdAt);
+    }
+
+    function escapeHtml(str) {
+        if (!str) return "";
+        return str.replace(/[&<>]/g, function(m) {
+            if (m === '&') return '&amp;';
+            if (m === '<') return '&lt;';
+            if (m === '>') return '&gt;';
+            return m;
+        });
+    }
+
+    function renderWeeklySchedule() {
+        const container = document.getElementById('weeklyScheduleContainer');
+        if (!container) return;
+        let html = '';
+        for (let i = 0; i < daysOfWeek.length; i++) {
+            const dayItems = getItemsForDay(i);
+            const count = dayItems.length;
+            let itemsHtml = '';
+            if (dayItems.length === 0) {
+                itemsHtml = `<div class="text-center text-muted small py-2" style="color:#a7a0cf;"><i class="far fa-calendar-alt me-1"></i> No plans</div>`;
+            } else {
+                dayItems.forEach(item => {
+                    const timeHtml = item.time ? `<span class="item-time ms-2"><i class="far fa-clock"></i> ${escapeHtml(item.time)}</span>` : '';
+                    itemsHtml += `
+                        <div class="schedule-item d-flex justify-content-between align-items-center">
+                            <div>
+                                <div class="item-title">${escapeHtml(item.title)}</div>
+                                ${timeHtml}
+                            </div>
+                            <div class="schedule-actions">
+                                <button class="btn btn-sm btn-outline-light edit-schedule-btn" data-id="${item.id}"><i class="fas fa-pen"></i></button>
+                                <button class="btn btn-sm btn-outline-danger ms-1 delete-schedule-btn" data-id="${item.id}"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            html += `
+                <div class="day-col">
+                    <div class="schedule-day-card card h-100 p-3">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="mb-0 fw-bold" style="color:#d9ceff;">${daysOfWeek[i]}</h5>
+                            <span class="badge-schedule-count">${count}</span>
+                        </div>
+                        <div class="schedule-items-list mb-3" style="max-height: 260px; overflow-y: auto; padding-right: 4px;">
+                            ${itemsHtml}
+                        </div>
+                        <button class="btn btn-sm btn-primary w-100 mt-1 add-schedule-day-btn" data-day="${i}">
+                            <i class="fas fa-plus-circle me-1"></i> Add item
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        container.innerHTML = html;
+
+        document.querySelectorAll('.add-schedule-day-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const day = parseInt(btn.getAttribute('data-day'));
+                openScheduleModal(null, day);
+            });
+        });
+        document.querySelectorAll('.edit-schedule-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(btn.getAttribute('data-id'));
+                openScheduleModal(id);
+            });
+        });
+        document.querySelectorAll('.delete-schedule-btn').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+                const id = parseInt(btn.getAttribute('data-id'));
+                if (confirm("❌ Delete this schedule item?")) {
+                    if (deleteScheduleItem(id)) {
+                        renderWeeklySchedule();
+                        showNotice("🗓️ Item removed", "#c25b7a");
+                    }
+                }
+            });
+        });
+    }
+
+    let currentModalEditId = null;
+    let scheduleModal = null;
+
+    function openScheduleModal(editId = null, presetDay = null) {
+        const modalElem = document.getElementById('scheduleItemModal');
+        if (!modalElem) return;
+        if (!scheduleModal) scheduleModal = new bootstrap.Modal(modalElem);
+        
+        const titleField = document.getElementById('scheduleTitle');
+        const timeField = document.getElementById('scheduleTime');
+        const daySelect = document.getElementById('scheduleDaySelect');
+        const modalTitleElem = document.getElementById('scheduleModalTitle');
+        
+        if (editId !== null) {
+            const item = scheduleItems.find(i => i.id === editId);
+            if (item) {
+                currentModalEditId = item.id;
+                modalTitleElem.innerHTML = '<i class="fas fa-edit me-2"></i>Edit schedule item';
+                titleField.value = item.title;
+                timeField.value = item.time || '';
+                daySelect.value = item.dayIndex;
+            } else {
+                scheduleModal.hide();
+                return;
+            }
+        } else {
+            currentModalEditId = null;
+            modalTitleElem.innerHTML = '<i class="fas fa-plus-circle me-2"></i>Add schedule item';
+            titleField.value = '';
+            timeField.value = '';
+            daySelect.value = (presetDay !== null && presetDay >= 0 && presetDay <= 6) ? presetDay : 0;
+        }
+        scheduleModal.show();
+    }
+
+    function saveScheduleFromModal() {
+        const title = document.getElementById('scheduleTitle').value.trim();
+        const time = document.getElementById('scheduleTime').value;
+        const dayIndex = parseInt(document.getElementById('scheduleDaySelect').value);
+        
+        if (!title) {
+            showNotice("⚠️ Please enter a title", "#b3476e");
+            return false;
+        }
+        
+        let success = false;
+        if (currentModalEditId !== null) {
+            success = updateScheduleItem(currentModalEditId, dayIndex, title, time);
+            if (success) {
+                showNotice("✅ Schedule updated", "#4f7a69");
+                renderWeeklySchedule();
+                if (scheduleModal) scheduleModal.hide();
+            } else {
+                showNotice("❌ Update failed", "#b3476e");
+            }
+        } else {
+            success = addScheduleItem(dayIndex, title, time);
+            if (success) {
+                showNotice("➕ New schedule added", "#7a5bc9");
+                renderWeeklySchedule();
+                if (scheduleModal) scheduleModal.hide();
+            } else {
+                showNotice("❌ Could not add item", "#b3476e");
+            }
+        }
+        return success;
+    }
+
+    function init() {
+        loadSchedule();
+        renderWeeklySchedule();
+
+        const clearNavBtn = document.getElementById('clearAllScheduleNavBtn');
+        if (clearNavBtn) clearNavBtn.addEventListener('click', clearAllSchedule);
+        
+        const saveModalBtn = document.getElementById('saveScheduleBtn');
+        if (saveModalBtn) saveModalBtn.addEventListener('click', saveScheduleFromModal);
+        
+        // Brand click: refresh the page (time manager gets refreshed)
+        const brand = document.getElementById('refreshBrand');
+        if (brand) {
+            brand.addEventListener('click', (e) => {
+                e.preventDefault();
+                window.location.reload();
+            });
+        }
+        
+        // sync across tabs
+        window.addEventListener('storage', (e) => {
+            if (e.key === SCHEDULE_STORAGE) {
+                loadSchedule();
+                renderWeeklySchedule();
+                showNotice("Schedule updated", "#5B4B9F");
+            }
+        });
+    }
+    
+    init();
+</script>
+</body>
+</html>
