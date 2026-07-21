@@ -1,0 +1,84 @@
+/* General Reset */
+body, html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+/* Header Styling */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #e23744; /* Zomato Red */
+    color: white;
+}
+
+header .logo img {
+    height: 50px;
+}
+
+header ul {
+    list-style: none;
+    display: flex;
+    gap: 20px;
+    margin: 0;
+    padding: 0;
+}
+
+header ul li a {
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+header ul li a:hover {
+    color: #ffccd5; /* Lighter shade of red */
+}
+
+/* Main Section Styling */
+main {
+    text-align: center;
+    padding: 50px;
+    background-color: #000000;
+    color: #333;
+}
+
+main img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+main p {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #e23744;
+}
+
+main input {
+    padding: 10px;
+    width: 300px;
+    border: 2px solid #e23744;
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+main input:focus {
+    border-color: #ffccd5;
+}
+
+/* Footer Styling */
+footer {
+    text-align: center;
+    padding: 20px;
+    background-color: #e23744;
+    color: white;
+    font-size: 0.9rem;
+}
